@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Command Challenge</title>
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #FF6584;
+            --correct: #4CAF50;
+            --wrong: #F44336;
+            --background: #111827;
+            --card-bg: #1F2937;
+            --text: #F9FAFB;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(108, 99, 255, 0.3);
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+        
+        .question {
+            font-size: 24px;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        
+        .question-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .option.correct {
+            background-color: var(--correct);
+            color: white;
+            border-color: var(--correct);
+        }
+        
+        .option.wrong {
+            background-color: var(--wrong);
+            color: white;
+            border-color: var(--wrong);
+        }
+        
+        .option.disabled {
+            pointer-events: none;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-next {
+            background-color: var(--secondary);
+        }
+        
+        .progress-container {
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .stats > div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .score-value, .timer-value {
+            font-weight: bold;
+            font-size: 22px;
+            color: var(--secondary);
+        }
+        
+        .results {
+            text-align: center;
+            display: none;
+        }
+        
+        .results h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .score-display {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .final-score {
+            font-size: 60px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        
+        .accuracy {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .start-screen {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .start-screen h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .start-screen p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0.8;
+            border-radius: 50%;
+            animation: fall 3s ease-out infinite;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .quiz-container {
+            display: none;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .explanation {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 16px;
+            display: none;
+        }
+        
+        .explanation-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .question {
+                font-size: 20px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Linux Command Challenge</h1>
+            <p>Test your knowledge of Linux commands and tools</p>
+        </div>
+        
+        <div class="start-screen">
+            <h2>Welcome to the Linux Command Challenge!</h2>
+            <p>Test your knowledge of Linux commands, networking tools, and cybersecurity utilities with this interactive quiz. Answer questions correctly to earn points and beat your high score!</p>
+            <button id="start-btn" class="btn">Start Quiz</button>
+        </div>
+        
+        <div class="quiz-container">
+            <div class="stats">
+                <div class="score">
+                    Score: <span class="score-value">0</span>
+                </div>
+                <div class="timer">
+                    Time: <span class="timer-value">0</span>s
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            
+            <div class="card">
+                <div class="question-number">1</div>
+                <div class="question">Loading question...</div>
+                <div class="options">
+                    <div class="option" data-index="0">Option A</div>
+                    <div class="option" data-index="1">Option B</div>
+                    <div class="option" data-index="2">Option C</div>
+                    <div class="option" data-index="3">Option D</div>
+                </div>
+                <div class="explanation">
+                    <div class="explanation-title">Explanation:</div>
+                    <div class="explanation-text"></div>
+                </div>
+                <div class="controls">
+                    <button id="prev-btn" class="btn" disabled>Previous</button>
+                    <button id="next-btn" class="btn btn-next" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results">
+            <h2>Quiz Completed!</h2>
+            <div class="score-display">Your Score:</div>
+            <div class="final-score">0</div>
+            <div class="accuracy">Accuracy: 0%</div>
+            <button id="restart-btn" class="btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // Quiz questions and answers
+        const questions = [
+            {
+                question: "Which command is used to print the current working directory?",
+                options: ["ls", "pwd", "cd", "whoami"],
+                answer: 1,
+                explanation: "The 'pwd' command (print working directory) displays the full path of the current directory you are in."
+            },
+            {
+                question: "Which command lists all files including hidden ones?",
+                options: ["ls", "showfiles", "dir", "ls -la"],
+                answer: 3,
+                explanation: "The 'ls -la' command lists all files, including hidden ones (those starting with a dot) in a long format with detailed information."
+            },
+            {
+                question: "Which command changes the current directory?",
+                options: ["pwd", "ls", "mv", "cd"],
+                answer: 3,
+                explanation: "The 'cd' command (change directory) is used to navigate between directories in a file system."
+            },
+            {
+                question: "Which command shows IP address info?",
+                options: ["tcpdump", "netstat", "ip a", "ping"],
+                answer: 2,
+                explanation: "The 'ip a' command displays information about all network interfaces, including IP addresses, MAC addresses, and their status."
+            },
+            {
+                question: "Which tool shows the path packets take to a host?",
+                options: ["netstat", "ping", "route", "traceroute"],
+                answer: 3,
+                explanation: "The 'traceroute' command shows the path that packets take to reach a destination, displaying each hop along the route."
+            },
+            {
+                question: "Which tool is used to test basic connectivity to a host?",
+                options: ["nmap", "curl", "ping", "traceroute"],
+                answer: 2,
+                explanation: "The 'ping' command sends ICMP echo requests to test if a host is reachable and responsive on a network."
+            },
+            {
+                question: "Which command is used to view system-wide active connections?",
+                options: ["uptime", "netstat -tuln", "top", "ps aux"],
+                answer: 1,
+                explanation: "The 'netstat -tuln' command displays all active TCP and UDP connections, listening ports, without resolving hostnames."
+            },
+            {
+                question: "Which tool is used for advanced socket statistics?",
+                options: ["netstat", "ip a", "ss -tuln", "tcpdump"],
+                answer: 2,
+                explanation: "The 'ss -tuln' command is a more modern and faster replacement for netstat, providing detailed socket statistics."
+            },
+            {
+                question: "Which tool scans hosts and services?",
+                options: ["nmap", "ping", "dirb", "tcpdump"],
+                answer: 0,
+                explanation: "The 'nmap' (Network Mapper) is a powerful tool for network discovery and security auditing, used to scan hosts and services."
+            },
+            {
+                question: "Which command shows network interfaces?",
+                options: ["ifconfig", "ping", "ip addr", "nslookup"],
+                answer: 0,
+                explanation: "The 'ifconfig' command displays and configures network interface parameters. Note that it's being phased out in favor of the 'ip' command in modern distributions."
+            },
+            {
+                question: "Which command creates a new empty file?",
+                options: ["nano", "cat", "touch", "mkdir"],
+                answer: 2,
+                explanation: "The 'touch' command creates a new empty file if it doesn't exist, or updates the timestamp of an existing file."
+            },
+            {
+                question: "Which editor opens text files in the terminal?",
+                options: ["vim", "touch", "nano", "code"],
+                answer: 2,
+                explanation: "The 'nano' is a simple terminal-based text editor that's easy to use for beginners, with commands displayed at the bottom of the screen."
+            },
+            {
+                question: "Which command shows contents of a file?",
+                options: ["cat", "touch", "ls", "nano"],
+                answer: 0,
+                explanation: "The 'cat' command (concatenate) displays the contents of one or more files to the standard output."
+            },
+            {
+                question: "Which command copies a file?",
+                options: ["cp", "mv", "copy", "scp"],
+                answer: 0,
+                explanation: "The 'cp' command is used to copy files or directories from one location to another."
+            },
+            {
+                question: "Which command moves or renames a file?",
+                options: ["mv", "cp", "rename", "cut"],
+                answer: 0,
+                explanation: "The 'mv' command moves files or directories from one location to another. It can also be used to rename files or directories."
+            },
+            {
+                question: "Which command deletes a directory and its contents?",
+                options: ["rm -rf", "delete", "mv", "cut"],
+                answer: 0,
+                explanation: "The 'rm -rf' command recursively (-r) and forcefully (-f) removes directories and their contents without prompting for confirmation."
+            },
+            {
+                question: "Which command displays the kernel version?",
+                options: ["whoami", "uname -a", "top", "lsb_release -a"],
+                answer: 1,
+                explanation: "The 'uname -a' command prints all system information, including the kernel version, hostname, and architecture."
+            },
+            {
+                question: "Which command shows who is currently logged in?",
+                options: ["who", "id", "login", "whoami"],
+                answer: 3,
+                explanation: "The 'whoami' command displays the username of the current user."
+            },
+            {
+                question: "Which command lists running processes?",
+                options: ["kill", "top", "jobs", "ps aux"],
+                answer: 3,
+                explanation: "The 'ps aux' command displays detailed information about all running processes on the system."
+            },
+            {
+                question: "Which command monitors system usage in real-time?",
+                options: ["top", "ps", "htop", "uptime"],
+                answer: 0,
+                explanation: "The 'top' command provides a dynamic real-time view of running processes and system resource usage."
+            },
+            {
+                question: "Which command launches Metasploit?",
+                options: ["exploit", "msfconsole", "nmap", "msfvenom"],
+                answer: 1,
+                explanation: "The 'msfconsole' command launches the Metasploit Framework console, a powerful platform for developing, testing, and executing exploits."
+            },
+            {
+                question: "Which tool searches Exploit-DB?",
+                options: ["searchsploit", "msfconsole", "recon-ng", "exploitdb"],
+                answer: 0,
+                explanation: "The 'searchsploit' command searches through the Exploit Database repository, which contains various exploits and vulnerabilities."
+            },
+            {
+                question: "Which tool performs brute force SSH attacks?",
+                options: ["nmap", "john", "sqlmap", "hydra"],
+                answer: 3,
+                explanation: "The 'hydra' is a fast network login cracker that can perform rapid dictionary attacks against various network services, including SSH."
+            },
+            {
+                question: "Which tool cracks password hashes?",
+                options: ["hydra", "john", "hashcat", "crackmapexec"],
+                answer: 1,
+                explanation: "The 'john' (John the Ripper) is a fast password cracker that can handle various types of password hashes."
+            },
+            {
+                question: "Which tool performs directory brute-forcing?",
+                options: ["ffuf", "gobuster", "all", "dirb"],
+                answer: 2,
+                explanation: "The answer is 'all' as ffuf, gobuster, and dirb are all tools used for directory brute-forcing to discover hidden directories and files on web servers."
+            },
+            {
+                question: "Which command detects SQL injection?",
+                options: ["nikto", "dirsearch", "sqlmap", "xsser"],
+                answer: 2,
+                explanation: "The 'sqlmap' is an automated tool that detects and exploits SQL injection vulnerabilities."
+            },
+            {
+                question: "Which command analyzes packets on a network?",
+                options: ["ss", "tcpdump", "ping", "wireshark"],
+                answer: 1,
+                explanation: "The 'tcpdump' is a command-line packet analyzer that allows the user to capture and display TCP/IP packets transmitted or received over a network."
+            },
+            {
+                question: "Which GUI tool is used for packet analysis?",
+                options: ["tcpdump", "aircrack-ng", "wireshark", "nmap"],
+                answer: 2,
+                explanation: "The 'wireshark' is a popular GUI-based network protocol analyzer used for detailed packet inspection and analysis."
+            },
+            {
+                question: "Which command is used to crack Wi-Fi passwords?",
+                options: ["hydra", "reaver", "tcpdump", "aircrack-ng"],
+                answer: 3,
+                explanation: "The 'aircrack-ng' is a suite of tools for auditing wireless networks, including password cracking capabilities."
+            },
+            {
+                question: "Which tool generates payloads?",
+                options: ["exploitdb", "msfconsole", "msfvenom", "searchsploit"],
+                answer: 2,
+                explanation: "The 'msfvenom' is a Metasploit standalone payload generator that can create various types of shell code, executables, and other payloads."
+            },
+            {
+                question: "Which tool scans LAN for active devices?",
+                options: ["masscan", "zmap", "arp-scan", "ping sweep"],
+                answer: 2,
+                explanation: "The 'arp-scan' sends ARP packets to quickly discover and identify active devices on a local area network."
+            },
+            {
+                question: "Which tool enumerates Windows/Samba info?",
+                options: ["smbclient", "nmap", "enum4linux", "rpcclient"],
+                answer: 2,
+                explanation: "The 'enum4linux' is a tool for enumerating information from Windows and Samba systems, including user listings, share listings, and more."
+            },
+            {
+                question: "Which command queries SNMP info?",
+                options: ["enum4linux", "snmpget", "nmap", "snmpwalk"],
+                answer: 3,
+                explanation: "The 'snmpwalk' command is used to retrieve a subtree of management values using SNMP GETNEXT requests."
+            },
+            {
+                question: "Which tool crafts custom TCP/IP packets?",
+                options: ["ping", "tcpdump", "nmap", "hping3"],
+                answer: 3,
+                explanation: "The 'hping3' is a command-line TCP/IP packet assembler/analyzer that allows for crafting custom packets for testing network security and performance."
+            },
+            {
+                question: "Which command performs DNS enumeration?",
+                options: ["dnsenum", "dig", "nslookup", "whois"],
+                answer: 0,
+                explanation: "The 'dnsenum' is specialized tool for enumerating DNS information of a domain, including host addresses, name servers, and more."
+            },
+            {
+                question: "Which scanner checks web servers for issues?",
+                options: ["nikto", "burpsuite", "nmap", "dirsearch"],
+                answer: 0,
+                explanation: "The 'nikto' is a web server scanner that checks for outdated software, misconfigurations, and security vulnerabilities."
+            },
+            {
+                question: "Which tool scans WordPress for vulnerabilities?",
+                options: ["wpscan", "sqlmap", "cmseek", "nuclei"],
+                answer: 0,
+                explanation: "The 'wpscan' is a black box WordPress security scanner that can identify vulnerabilities, plugin versions, and other security issues."
+            },
+            {
+                question: "Which framework is used for open-source recon?",
+                options: ["recon-ng", "searchsploit", "ffuf", "xssstrike"],
+                answer: 0,
+                explanation: "The 'recon-ng' is a full-featured reconnaissance framework with modules for web reconnaissance, collecting contact information, and more."
+            },
+            {
+                question: "Which command runs the Burp proxy?",
+                options: ["proxychains", "nmap", "burp", "burpsuite"],
+                answer: 3,
+                explanation: "The 'burpsuite' command launches the Burp Suite web vulnerability scanner and proxy tool."
+            },
+            {
+                question: "Which tool finds and exploits XSS?",
+                options: ["sqlmap", "dirb", "jwt_tool", "xsser"],
+                answer: 3,
+                explanation: "The 'xsser' is an automated framework to detect, exploit and report XSS vulnerabilities in web applications."
+            },
+            {
+                question: "Which command sets up a simple backdoor?",
+                options: ["nc", "socat", "pwncat", "ncat"],
+                answer: 3,
+                explanation: "The 'ncat' (enhanced version of netcat) can be used to set up listeners and create simple backdoors for remote access."
+            },
+            {
+                question: "Which tool creates reverse encrypted shells?",
+                options: ["ncat", "mimikatz", "chisel", "socat"],
+                answer: 3,
+                explanation: "The 'socat' is a multipurpose relay tool that can create encrypted bidirectional data transfers, including encrypted reverse shells."
+            },
+            {
+                question: "Which tool creates tunnels for pivoting?",
+                options: ["pwncat", "proxychains", "chisel", "nmap"],
+                answer: 2,
+                explanation: "The 'chisel' is a fast TCP/UDP tunnel over HTTP, that can be used for pivoting through restricted networks."
+            },
+            {
+                question: "Which tool is used for post-exploitation on Windows?",
+                options: ["netcat", "empire", "powersploit", "mimikatz"],
+                answer: 1,
+                explanation: "The 'empire' is a post-exploitation framework that includes a pure-PowerShell agent and Python C2 server for Windows post-exploitation."
+            },
+            {
+                question: "Which tool cracks hashes with GPU acceleration?",
+                options: ["hashcat", "john", "hydra", "reaver"],
+                answer: 0,
+                explanation: "The 'hashcat' is a password recovery tool that leverages GPU acceleration to crack password hashes much faster than CPU-only tools."
+            },
+            {
+                question: "Which tool generates custom wordlists from websites?",
+                options: ["john", "reNgine", "cewl", "hydra"],
+                answer: 2,
+                explanation: "The 'cewl' (Custom Word List generator) crawls a specified website and creates a list of words that can be used for password cracking."
+            },
+            {
+                question: "Which tool cracks JWT tokens?",
+                options: ["hashcat", "jwt_tool", "jwt-cracker", "sqlmap"],
+                answer: 2,
+                explanation: "The 'jwt-cracker' is specifically designed to crack and analyze JWT (JSON Web Tokens) for security testing."
+            },
+            {
+                question: "Which tool performs SMB and Kerberos attacks?",
+                options: ["impacket", "evil-winrm", "crackmapexec", "hydra"],
+                answer: 0,
+                explanation: "The 'impacket' collection includes various Python classes for working with network protocols, enabling SMB and Kerberos attacks."
+            },
+            {
+                question: "Which tool can enumerate and exploit SMB shares?",
+                options: ["smbmap", "enum4linux", "crackmapexec", "nmap"],
+                answer: 2,
+                explanation: "The 'crackmapexec' is a post-exploitation tool that helps automate assessing the security of large Active Directory networks, including SMB enumeration and exploitation."
+            },
+            {
+                question: "Which tool is used for exploiting WinRM service?",
+                options: ["mimikatz", "evil-winrm", "wmiexec", "crackmapexec"],
+                answer: 1,
+                explanation: "The 'evil-winrm' is a penetration testing tool designed specifically for hacking Windows Remote Management service."
+            },
+            {
+                question: "Which tool automates recon and vulnerability scanning in a web UI?",
+                options: ["recon-ng", "burpsuite", "amass", "reNgine"],
+                answer: 3,
+                explanation: "The 'reNgine' is a web application reconnaissance tool with a clean web interface that automates the process of gathering information and scanning for vulnerabilities."
+            },
+            {
+                question: "Which scripting method is used to execute post-exploitation logic on Windows?",
+                options: ["bash", "curl", "python", "powershell scripts"],
+                answer: 3,
+                explanation: "The 'powershell scripts' are commonly used for post-exploitation activities on Windows systems due to PowerShell's deep integration with the Windows operating system."
+            }
+        ];
+
+        // DOM elements
+        const startScreen = document.querySelector('.start-screen');
+        const quizContainer = document.querySelector('.quiz-container');
+        const resultScreen = document.querySelector('.results');
+        const questionElement = document.querySelector('.question');
+        const questionNumberElement = document.querySelector('.question-number');
+        const optionsContainer = document.querySelector('.options');
+        const optionElements = document.querySelectorAll('.option');
+        const progressBar = document.querySelector('.progress-bar');
+        const scoreValue = document.querySelector('.score-value');
+        const timerValue = document.querySelector('.timer-value');
+        const finalScore = document.querySelector('.final-score');
+        const accuracy = document.querySelector('.accuracy');
+        const explanationElement = document.querySelector('.explanation');
+        const explanationText = document.querySelector('.explanation-text');
+        
+        // Buttons
+        const startButton = document.getElementById('start-btn');
+        const prevButton = document.getElementById('prev-btn');
+        const nextButton = document.getElementById('next-btn');
+        const restartButton = document.getElementById('restart-btn');
+        
+        // Game state
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer = 0;
+        let timerInterval;
+        let selectedAnswers = [];
+        let questionsSeen = 0;
+        let correctAnswers = 0;
+        let shuffledQuestions = [];
+        
+        // Initialize the game
+        function initGame() {
+            // Shuffle questions
+            shuffledQuestions = [...questions];
+            for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+            }
+            
+            // Initialize state
+            currentQuestionIndex = 0;
+            score = 0;
+            timer = 0;
+            selectedAnswers = Array(shuffledQuestions.length).fill(-1);
+            questionsSeen = 0;
+            correctAnswers = 0;
+            
+            // Update UI
+            updateQuestion();
+            updateScore();
+            updateProgressBar();
+            
+            // Start timer
+            startTimer();
+            
+            // Add event listeners
+            optionElements.forEach(option => {
+                option.addEventListener('click', () => selectOption(parseInt(option.dataset.index)));
+            });
+        }
+        
+        // Start button click event
+        startButton.addEventListener('click', () => {
+            startScreen.style.display = 'none';
+            quizContainer.style.display = 'flex';
+            initGame();
+        });
+        
+                // Next button click event
+                nextButton.addEventListener('click', () => {
+            if (currentQuestionIndex < shuffledQuestions.length - 1) {
+                currentQuestionIndex++;
+                updateQuestion();
+            } else {
+                endQuiz();
+            }
+        });
+
+        // Previous button click event
+        prevButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateQuestion();
+            }
+        });
+
+        // Restart button click event
+        restartButton.addEventListener('click', () => {
+            resultScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+        });
+
+        // Update question UI
+        function updateQuestion() {
+            const current = shuffledQuestions[currentQuestionIndex];
+            questionElement.textContent = current.question;
+            questionNumberElement.textContent = currentQuestionIndex + 1;
+            explanationElement.style.display = 'none';
+            explanationText.textContent = "";
+
+            optionElements.forEach((opt, index) => {
+                opt.textContent = current.options[index];
+                opt.classList.remove('correct', 'wrong', 'disabled');
+                if (selectedAnswers[currentQuestionIndex] !== -1) {
+                    opt.classList.add('disabled');
+                    if (index === current.answer) {
+                        opt.classList.add('correct');
+                    } else if (index === selectedAnswers[currentQuestionIndex]) {
+                        opt.classList.add('wrong');
+                    }
+                    explanationElement.style.display = 'block';
+                    explanationText.textContent = current.explanation;
+                }
+            });
+
+            prevButton.disabled = currentQuestionIndex === 0;
+            nextButton.disabled = selectedAnswers[currentQuestionIndex] === -1;
+            updateProgressBar();
+        }
+
+        // Option selection
+        function selectOption(index) {
+            if (selectedAnswers[currentQuestionIndex] !== -1) return;
+            selectedAnswers[currentQuestionIndex] = index;
+
+            const current = shuffledQuestions[currentQuestionIndex];
+            if (index === current.answer) {
+                score += 10;
+                correctAnswers++;
+            }
+
+            updateScore();
+            explanationElement.style.display = 'block';
+            explanationText.textContent = current.explanation;
+
+            optionElements.forEach((opt, i) => {
+                opt.classList.add('disabled');
+                if (i === current.answer) {
+                    opt.classList.add('correct');
+                } else if (i === index) {
+                    opt.classList.add('wrong');
+                }
+            });
+
+            nextButton.disabled = false;
+        }
+
+        // Update score UI
+        function updateScore() {
+            scoreValue.textContent = score;
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Timer function
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerValue.textContent = 0;
+            timerInterval = setInterval(() => {
+                timer++;
+                timerValue.textContent = timer;
+            }, 1000);
+        }
+
+        // End quiz
+        function endQuiz() {
+            clearInterval(timerInterval);
+            quizContainer.style.display = 'none';
+            resultScreen.style.display = 'block';
+            finalScore.textContent = score;
+            const accuracyPercent = ((correctAnswers / shuffledQuestions.length) * 100).toFixed(1);
+            accuracy.textContent = `Accuracy: ${accuracyPercent}%`;
+        }
+    </script>
+</body>
+</html>
