@@ -221,9 +221,14 @@
         }
         
         .results {
-            text-align: center;
-            display: none;
-        }
+    display: none; /* hidden by default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+}
+
         
         .results h2 {
             font-size: 32px;
@@ -331,6 +336,8 @@
     </style>
 </head>
 <body>
+    <audio id="success-sound" src="turtle.mp3" preload="auto"></audio>
+
     <div class="container">
         <div class="header">
             <h1>Linux Command Challenge</h1>
@@ -401,6 +408,7 @@
                 answer: 3,
                 explanation: "The 'ls -la' command lists all files, including hidden ones (those starting with a dot) in a long format with detailed information."
             },
+            
             {
                 question: "Which command changes the current directory?",
                 options: ["pwd", "ls", "mv", "cd"],
@@ -529,7 +537,7 @@
             },
             {
                 question: "Which tool cracks password hashes?",
-                options: ["hydra", "john", "sqlmap", "crackmapexec"],
+                options: ["hydra", "john", "hashcat", "crackmapexec"],
                 answer: 1,
                 explanation: "The 'john' (John the Ripper) is a fast password cracker that can handle various types of password hashes."
             },
@@ -939,14 +947,14 @@
     {
         question: "Stealing financial data for profit exemplifies:",
         options: ["Economic motivation", "Political motivation", "Philosophical motivation", "Technical motivation"],
-        answer: 0,
-        explanation: "The correct answer is Economic motivation, carl bteswa ayre."
+        answer: 2,
+        explanation: "The correct answer is Philosophical motivation."
     },
     {
         question: "Hacking for publicity or personal belief falls under:",
         options: ["Economic motivation", "Political motivation", "Socio-cultural motivation", "Technical motivation"],
-        answer: 2,
-        explanation: "The correct answer is Socio-cultural motivation, er fik carl."
+        answer: 1,
+        explanation: "The correct answer is Political motivation."
     },
     {
         question: "Which describes an attack that alters data or resources on the target?",
@@ -987,8 +995,8 @@
     {
         question: "A living document of rules ensuring information system safety is known as a:",
         options: ["Threat model", "Security policy", "Incident report", "Backup plan"],
-        answer: 1,
-        explanation: "The correct answer is Security Policy, er fik carl."
+        answer: 3,
+        explanation: "The correct answer is Backup plan."
     },
     {
         question: "Which regulation focuses on protecting EU citizens’ personal data?",
@@ -1178,10 +1186,15 @@
         function endQuiz() { 
             clearInterval(timerInterval);
             quizContainer.style.display = 'none';
-            resultScreen.style.display = 'block';
+            resultScreen.style.display = 'flex';
             finalScore.textContent = score;
             const accuracyPercent = ((correctAnswers / shuffledQuestions.length) * 100).toFixed(1);
             accuracy.textContent = `Accuracy: ${accuracyPercent}%`;
+
+            if (accuracyPercent > 94) {
+        const successSound = document.getElementById('success-sound');
+        successSound.play();
+    }
         }
     </script>
 </body>
