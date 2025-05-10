@@ -700,7 +700,308 @@
                 options: ["bash", "curl", "python", "powershell scripts"],
                 answer: 3,
                 explanation: "The 'powershell scripts' are commonly used for post-exploitation activities on Windows systems due to PowerShell's deep integration with the Windows operating system."
-            }
+            },
+            
+            {
+        question: "What is the primary goal of cybersecurity?",
+        options: ["To increase system performance", "To protect digital data from unauthorized access", "To reduce hardware costs", "To monitor user productivity"],
+        answer: 1,
+        explanation: "The correct answer is To protect digital data from unauthorized access."
+    },
+    {
+        question: "Which practice ensures that data remains unreadable if intercepted?",
+        options: ["Data redundancy", "Data encryption", "Traffic analysis", "File inclusion"],
+        answer: 1,
+        explanation: "The correct answer is Data encryption."
+    },
+    {
+        question: "Two-factor authentication is an example of which cybersecurity principle?",
+        options: ["Confidentiality", "Integrity", "Availability", "Vulnerability management"],
+        answer: 0,
+        explanation: "The correct answer is Confidentiality."
+    },
+    {
+        question: "Which of the following is a biometric verification method?",
+        options: ["Security tokens", "Fingerprint scanning", "Cryptographic checksums", "External data backups"],
+        answer: 1,
+        explanation: "The correct answer is Fingerprint scanning."
+    },
+    {
+        question: "The “C” in the CIA triad stands for:",
+        options: ["Control", "Confidentiality", "Compliance", "Calculation"],
+        answer: 1,
+        explanation: "The correct answer is Confidentiality."
+    },
+    {
+        question: "Ensuring that data cannot be altered without detection refers to:",
+        options: ["Confidentiality", "Integrity", "Availability", "Asset management"],
+        answer: 1,
+        explanation: "The correct answer is Integrity."
+    },
+    {
+        question: "Making certain that authorized users can access resources when needed is known as:",
+        options: ["Confidentiality", "Integrity", "Availability", "Authentication"],
+        answer: 2,
+        explanation: "The correct answer is Availability."
+    },
+    {
+        question: "Which of the following best describes the CIA model?",
+        options: ["A framework for network architecture", "A set of security goals: Confidentiality, Integrity, Availability", "A protocol for encryption", "A network defense strategy"],
+        answer: 1,
+        explanation: "The correct answer is A set of security goals: Confidentiality, Integrity, Availability."
+    },
+    {
+        question: "An injection attack primarily targets which layer?",
+        options: ["Network layer", "Application layer", "Physical layer", "Perimeter layer"],
+        answer: 1,
+        explanation: "The correct answer is Application layer."
+    },
+    {
+        question: "DNS spoofing is a type of:",
+        options: ["Session hijacking", "Web-based attack", "Hardware attack", "Passive attack"],
+        answer: 1,
+        explanation: "The correct answer is Web-based attack."
+    },
+    {
+        question: "Session hijacking involves stealing:",
+        options: ["User credentials from a database", "Encryption keys", "Session cookies to impersonate a user", "Source IP addresses"],
+        answer: 2,
+        explanation: "The correct answer is Session cookies to impersonate a user."
+    },
+    {
+        question: "Which attack tricks users into revealing sensitive information by masquerading as a trustworthy entity?",
+        options: ["Phishing", "Worm infection", "Backdoor implant", "File inclusion"],
+        answer: 0,
+        explanation: "The correct answer is Phishing."
+    },
+    {
+        question: "A brute force attack relies on:",
+        options: ["Social engineering", "Guessing credentials via trial and error", "Exploiting software vulnerabilities", "Traffic analysis"],
+        answer: 1,
+        explanation: "The correct answer is Guessing credentials via trial and error."
+    },
+    {
+        question: "A volume-based DoS attack is measured in:",
+        options: ["Requests per second", "Bits per second", "Packets per second", "Sessions per minute"],
+        answer: 1,
+        explanation: "The correct answer is Bits per second."
+    },
+    {
+        question: "Protocol attacks in DoS aim to exhaust:",
+        options: ["Bandwidth", "Application memory", "Server resources", "DNS caches"],
+        answer: 2,
+        explanation: "The correct answer is Server resources."
+    },
+    {
+        question: "Application-layer DDoS attacks are typically measured in:",
+        options: ["Bits per second", "Packets per second", "Requests per second", "Sessions per second"],
+        answer: 2,
+        explanation: "The correct answer is Requests per second."
+    },
+    {
+        question: "What differentiates a dictionary attack from brute force?",
+        options: ["Uses known password lists rather than all possible combinations", "Targets hardware instead of software", "Intercepts network traffic", "Floods the server with malformed data"],
+        answer: 0,
+        explanation: "The correct answer is Uses known password lists rather than all possible combinations."
+    },
+    {
+        question: "Changing a URL to access unauthorized pages is known as:",
+        options: ["URL interpretation attack", "DNS spoofing", "Session fixation", "Folder traversal"],
+        answer: 3,
+        explanation: "The correct answer is Folder traversal."
+    },
+    {
+        question: "Embedding malicious code into a web page via improper inclusion is called:",
+        options: ["File inclusion attack", "Phishing", "Brute force", "Traffic sniffing"],
+        answer: 0,
+        explanation: "The correct answer is File inclusion attack."
+    },
+    {
+        question: "Intercepting and possibly altering communication between client and server defines:",
+        options: ["Man-in-the-Middle attack", "DDoS attack", "Backdoor implant", "Worm propagation"],
+        answer: 0,
+        explanation: "The correct answer is Man-in-the-Middle attack."
+    },
+    {
+        question: "A self-replicating program that spreads without user interaction is a:",
+        options: ["Trojan horse", "Virus", "Worm", "Bot"],
+        answer: 2,
+        explanation: "The correct answer is Worm."
+    },
+    {
+        question: "Which threat often originates from email attachments and spreads automatically?",
+        options: ["Virus", "Backdoor", "Worm", "Bot"],
+        answer: 2,
+        explanation: "The correct answer is Worm."
+    },
+    {
+        question: "Malware that disguises itself as legitimate software is a:",
+        options: ["Trojan horse", "Virus", "Worm", "Bot"],
+        answer: 0,
+        explanation: "The correct answer is Trojan horse."
+    },
+    {
+        question: "A hidden entry point installed by attackers is known as a:",
+        options: ["Bot", "Backdoor", "Worm", "Virus"],
+        answer: 1,
+        explanation: "The correct answer is Backdoor."
+    },
+    {
+        question: "Automated programs interacting with network services are called:",
+        options: ["Worms", "Bots", "Trojans", "Sessions"],
+        answer: 1,
+        explanation: "The correct answer is Bots."
+    },
+    {
+        question: "Which layer protects an organization’s most essential data?",
+        options: ["Endpoint security", "Mission critical assets", "Perimeter security", "Human layer"],
+        answer: 1,
+        explanation: "The correct answer is Mission critical assets."
+    },
+    {
+        question: "The layer that safeguards data during storage and transit is:",
+        options: ["Application security", "Data security", "Network security", "Perimeter security"],
+        answer: 1,
+        explanation: "The correct answer is Data security."
+    },
+    {
+        question: "Securing software from internal and external threats refers to:",
+        options: ["Data security", "Application security", "Endpoint security", "Asset security"],
+        answer: 1,
+        explanation: "The correct answer is Application security."
+    },
+    {
+        question: "Protecting devices like laptops and smartphones is the focus of:",
+        options: ["Network security", "Endpoint security", "Human layer", "Perimeter security"],
+        answer: 1,
+        explanation: "The correct answer is Endpoint security."
+    },
+    {
+        question: "Preventing unauthorized access to and within a network is achieved by:",
+        options: ["Mission critical asset management", "Human training", "Network security", "Data encryption"],
+        answer: 2,
+        explanation: "The correct answer is Network security."
+    },
+    {
+        question: "Physical and digital defenses around an organization constitute:",
+        options: ["Perimeter security", "Application security", "Endpoint security", "Threat hunting"],
+        answer: 0,
+        explanation: "The correct answer is Perimeter security."
+    },
+    {
+        question: "Which layer is often considered the weakest link in cybersecurity?",
+        options: ["Network security", "Application security", "Human layer", "Perimeter security"],
+        answer: 2,
+        explanation: "The correct answer is Human layer."
+    },
+    {
+        question: "A system weakness that can be exploited by a threat is called a:",
+        options: ["Threat", "Vulnerability", "Asset", "Policy"],
+        answer: 1,
+        explanation: "The correct answer is Vulnerability."
+    },
+    {
+        question: "Data corruption due to unauthorized modification is a loss of:",
+        options: ["Confidentiality", "Integrity", "Availability", "Compliance"],
+        answer: 1,
+        explanation: "The correct answer is Integrity."
+    },
+    {
+        question: "Exposing sensitive information to unauthorized parties is a loss of:",
+        options: ["Availability", "Confidentiality", "Integrity", "Redundancy"],
+        answer: 1,
+        explanation: "The correct answer is Confidentiality."
+    },
+    {
+        question: "A system becoming slow or unresponsive represents a loss of:",
+        options: ["Confidentiality", "Integrity", "Availability", "Encryption"],
+        answer: 2,
+        explanation: "The correct answer is Availability."
+    },
+    {
+        question: "Anything valuable to an organization—data, devices, or software—is termed a(n):",
+        options: ["Threat", "Vulnerability", "Asset", "Policy"],
+        answer: 2,
+        explanation: "The correct answer is Asset."
+    },
+    {
+        question: "An incident with potential to harm an asset is a:",
+        options: ["Policy", "Threat", "Vulnerability", "Control"],
+        answer: 1,
+        explanation: "The correct answer is Threat."
+    },
+    {
+        question: "An attacker motivated by political gain is likely driven by:",
+        options: ["Economic motivation", "Socio-cultural motivation", "Political motivation", "Curiosity"],
+        answer: 2,
+        explanation: "The correct answer is Political motivation."
+    },
+    {
+        question: "Stealing financial data for profit exemplifies:",
+        options: ["Economic motivation", "Political motivation", "Philosophical motivation", "Technical motivation"],
+        answer: 2,
+        explanation: "The correct answer is Philosophical motivation."
+    },
+    {
+        question: "Hacking for publicity or personal belief falls under:",
+        options: ["Economic motivation", "Political motivation", "Socio-cultural motivation", "Technical motivation"],
+        answer: 1,
+        explanation: "The correct answer is Political motivation."
+    },
+    {
+        question: "Which describes an attack that alters data or resources on the target?",
+        options: ["Passive attack", "Active attack", "Hardware attack", "Social engineering"],
+        answer: 1,
+        explanation: "The correct answer is Active attack."
+    },
+    {
+        question: "Replay of valid data transmissions to deceive a system is known as:",
+        options: ["Session hijacking", "Session replay", "Traffic analysis", "DNS spoofing"],
+        answer: 1,
+        explanation: "The correct answer is Session replay."
+    },
+    {
+        question: "Listening to network communication without altering it is called:",
+        options: ["Traffic analysis", "Eavesdropping", "Man-in-the-Middle", "Phishing"],
+        answer: 1,
+        explanation: "The correct answer is Eavesdropping."
+    },
+    {
+        question: "Implanting malicious hardware or inducing faults falls under:",
+        options: ["Software attack", "Hardware attack", "Application attack", "Network attack"],
+        answer: 1,
+        explanation: "The correct answer is Hardware attack."
+    },
+    {
+        question: "State-sponsored digital attacks aimed at disrupting another nation’s systems are referred to as:",
+        options: ["Cybercrime", "Cyberterrorism", "Cyberwarfare", "Cyberespionage"],
+        answer: 2,
+        explanation: "The correct answer is Cyberwarfare."
+    },
+    {
+        question: "Covertly obtaining confidential information for political or military advantage is:",
+        options: ["Cybercrime", "Cyberterrorism", "Cyberwarfare", "Cyberespionage"],
+        answer: 3,
+        explanation: "The correct answer is Cyberespionage."
+    },
+    {
+        question: "A living document of rules ensuring information system safety is known as a:",
+        options: ["Threat model", "Security policy", "Incident report", "Backup plan"],
+        answer: 3,
+        explanation: "The correct answer is Backup plan."
+    },
+    {
+        question: "Which regulation focuses on protecting EU citizens’ personal data?",
+        options: ["HIPAA", "GDPR", "PCI DSS", "NIST CSF"],
+        answer: 1,
+        explanation: "The correct answer is GDPR."
+    },
+    {
+        question: "The framework providing guidelines to manage and reduce cybersecurity risks in the U.S. is:",
+        options: ["ISO/IEC 27001", "GDPR", "PCI DSS", "NIST Cybersecurity Framework"],
+        answer: 3,
+        explanation: "The correct answer is NIST Cybersecurity Framework."
+    }
         ];
 
         // DOM elements
@@ -874,7 +1175,7 @@
         }
 
         // End quiz
-        function endQuiz() {
+        function endQuiz() { 
             clearInterval(timerInterval);
             quizContainer.style.display = 'none';
             resultScreen.style.display = 'block';
