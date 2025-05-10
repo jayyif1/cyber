@@ -1009,7 +1009,61 @@
         options: ["ISO/IEC 27001", "GDPR", "PCI DSS", "NIST Cybersecurity Framework"],
         answer: 3,
         explanation: "The correct answer is NIST Cybersecurity Framework."
-    }
+    },
+        {
+        question: "Which tool is used to perform comprehensive reconnaissance on a target?",
+        options: ["qsreplace", "cmseek", "dmitry", "ios-decrypt"],
+        answer: 2,
+        explanation: "The 'dmitry' command performs comprehensive reconnaissance on a target, gathering various information like whois data, subdomains, and open ports."
+    },
+    {
+        question: "Which command traces the path to a DNS server?",
+        options: ["qsreplace", "dnstracer", "whatweb", "jadx"],
+        answer: 1,
+        explanation: "The 'dnstracer' command traces the path to a DNS server to help identify how DNS queries are being resolved."
+    },
+    {
+        question: "Which tool captures and analyzes network traffic flows?",
+        options: ["tcpflow", "dmitry", "qsreplace", "zmap"],
+        answer: 0,
+        explanation: "The 'tcpflow' command captures data transmitted as part of TCP connections and organizes it by connection."
+    },
+    {
+        question: "Which tool performs fast network-wide port scanning?",
+        options: ["nuclei", "waybackurls", "arjun", "masscan"],
+        answer: 3,
+        explanation: "The 'masscan' command is used for extremely fast network port scanning, capable of scanning the entire Internet in minutes."
+    },
+    {
+        question: "Which tool is used to fetch URLs from multiple sources?",
+        options: ["dex2jar", "dirsearch", "gau", "objection"],
+        answer: 2,
+        explanation: "The 'gau' command fetches URLs from sources like Wayback Machine and Common Crawl, useful for recon and fuzzing."
+    },
+    {
+        question: "Which tool is used to crawl a website for hidden endpoints?",
+        options: ["mobSF", "dex2jar", "hakrawler", "wafw00f"],
+        answer: 2,
+        explanation: "The 'hakrawler' command crawls a website to discover hidden endpoints and parameters useful in web application testing."
+    },
+    {
+        question: "Which tool is used to detect CSRF vulnerabilities?",
+        options: ["xsrfprobe", "dex2jar", "mitmproxy", "adb"],
+        answer: 0,
+        explanation: "The 'xsrfprobe' command detects Cross-Site Request Forgery vulnerabilities in web applications."
+    },
+    {
+        question: "Which tool is used to detect and fingerprint web application firewalls?",
+        options: ["dirsearch", "wafw00f", "mitmproxy", "mobSF"],
+        answer: 1,
+        explanation: "The 'wafw00f' command identifies and fingerprints Web Application Firewalls (WAFs) in front of a target application."
+    },
+    {
+        question: "Which tool is used to perform advanced directory brute-forcing?",
+        options: ["adb", "dirsearch", "gau", "xsrfprobe"],
+        answer: 1,
+        explanation: "The 'dirsearch' command performs recursive and advanced brute-forcing of directories and files on web servers."
+    }    
         ];
 
         // DOM elements
